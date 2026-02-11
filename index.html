@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy 4th Monthsary, Peachy 🍑</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Lato:wght@300;400&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --blush:       #f2c4ce;
+      --rose:        #e8a0b0;
+      --dusty-pink:  #d4849a;
+      --deep-rose:   #b5606e;
+      --cream:       #fdf6f0;
+      --warm-white:  #fff8f5;
+      --petal:       #fde8ed;
+      --text-dark:   #4a2d35;
+      --text-mid:    #7a4f58;
+      --text-light:  #a87880;
+      --gold:        #c9a96e;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--text-dark);
+      font-family: 'Lato', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ─── FALLING PETALS ─── */
+    #petals-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; width: 100%;
+      z-index: 100;
+      padding: 18px 40px;
+      display: flex;
+      justify-content: center;
+      gap: 36px;
+      background: rgba(253,246,240,0.75);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(228,160,176,0.2);
+    }
+    nav a {
+      font-family: 'Lato', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    nav a:hover { color: var(--deep-rose); }
+
+    /* ─── SECTIONS SHARED ─── */
+    section {
+      position: relative;
+      z-index: 1;
+      padding: 100px 24px;
+    }
+
+    .container {
+      max-width: 780px;
+      margin: 0 auto;
+    }
+
+    /* ─── HERO ─── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      flex-direction: column;
+      gap: 0;
+      padding-top: 80px;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.3rem;
+      color: var(--dusty-pink);
+      opacity: 0;
+      animation: fadeUp 1s 0.3s forwards;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 10vw, 6.5rem);
+      font-weight: 300;
+      line-height: 1.05;
+      color: var(--text-dark);
+      margin: 12px 0 6px;
+      opacity: 0;
+      animation: fadeUp 1s 0.6s forwards;
+    }
+
+    .hero-title span {
+      font-style: italic;
+      color: var(--deep-rose);
+    }
+
+    .hero-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1rem, 3vw, 1.35rem);
+      font-style: italic;
+      color: var(--text-light);
+      margin-top: 10px;
+      opacity: 0;
+      animation: fadeUp 1s 0.9s forwards;
+    }
+
+    .hero-divider {
+      width: 60px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--rose), transparent);
+      margin: 30px auto;
+      opacity: 0;
+      animation: fadeUp 1s 1.1s forwards;
+    }
+
+    .hero-date {
+      font-family: 'Lato', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      opacity: 0;
+      animation: fadeUp 1s 1.3s forwards;
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+      animation: fadeUp 1s 2s forwards;
+    }
+    .scroll-hint span {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-light);
+    }
+    .scroll-arrow {
+      width: 16px;
+      height: 16px;
+      border-right: 1px solid var(--rose);
+      border-bottom: 1px solid var(--rose);
+      transform: rotate(45deg);
+      animation: bounce 1.5s infinite;
+    }
+
+    /* ─── SECTION HEADERS ─── */
+    .section-label {
+      font-family: 'Lato', sans-serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--dusty-pink);
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 6vw, 3.2rem);
+      font-weight: 300;
+      color: var(--text-dark);
+      line-height: 1.15;
+      margin-bottom: 32px;
+    }
+    .section-title em {
+      font-style: italic;
+      color: var(--deep-rose);
+    }
+
+    /* ─── LOVE LETTER ─── */
+    #letter {
+      background: var(--warm-white);
+    }
+
+    .letter-card {
+      background: white;
+      border: 1px solid rgba(228,160,176,0.25);
+      border-radius: 2px;
+      padding: clamp(32px, 6vw, 64px);
+      box-shadow:
+        0 2px 40px rgba(180,96,110,0.07),
+        0 1px 0 rgba(255,255,255,0.9) inset;
+      position: relative;
+    }
+
+    .letter-card::before {
+      content: '"';
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 10rem;
+      color: var(--petal);
+      position: absolute;
+      top: -20px;
+      left: 20px;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .letter-body {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      line-height: 2;
+      color: var(--text-mid);
+      font-weight: 300;
+    }
+
+    .letter-body p + p { margin-top: 1.4em; }
+
+    .letter-signature {
+      margin-top: 40px;
+      text-align: right;
+    }
+
+    .letter-signature .sig-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .letter-signature .sig-name {
+      font-family: 'Dancing Script', cursive;
+      font-size: 2rem;
+      color: var(--deep-rose);
+    }
+
+    /* ─── TIMELINE ─── */
+    #timeline { background: var(--cream); }
+
+    .timeline {
+      position: relative;
+      margin-top: 20px;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 0; bottom: 0;
+      width: 1px;
+      background: linear-gradient(180deg, transparent, var(--rose) 10%, var(--rose) 90%, transparent);
+    }
+
+    .tl-item {
+      display: grid;
+      grid-template-columns: 1fr 40px 1fr;
+      gap: 0 16px;
+      align-items: center;
+      margin-bottom: 56px;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s, transform 0.6s;
+    }
+    .tl-item.visible { opacity: 1; transform: translateY(0); }
+
+    .tl-item:nth-child(odd) .tl-content { grid-column: 1; text-align: right; }
+    .tl-item:nth-child(odd) .tl-dot     { grid-column: 2; }
+    .tl-item:nth-child(odd) .tl-date    { grid-column: 3; text-align: left; }
+
+    .tl-item:nth-child(even) .tl-date    { grid-column: 1; text-align: right; }
+    .tl-item:nth-child(even) .tl-dot     { grid-column: 2; }
+    .tl-item:nth-child(even) .tl-content { grid-column: 3; text-align: left; grid-row: 1; }
+
+    .tl-dot {
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: white;
+      border: 2px solid var(--rose);
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+      flex-shrink: 0;
+    }
+    .tl-dot::after {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      background: rgba(228,160,176,0.15);
+    }
+
+    .tl-date {
+      font-family: 'Lato', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--dusty-pink);
+    }
+
+    .tl-content h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      margin-bottom: 4px;
+    }
+    .tl-content p {
+      font-size: 0.88rem;
+      color: var(--text-light);
+      line-height: 1.65;
+    }
+
+    /* ─── GALLERY ─── */
+    #gallery { background: var(--warm-white); }
+
+    .gallery-intro {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-style: italic;
+      color: var(--text-light);
+      margin-bottom: 40px;
+      line-height: 1.8;
+    }
+
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+    }
+
+    .photo-slot {
+      aspect-ratio: 4/5;
+      background: var(--petal);
+      border: 1px dashed var(--blush);
+      border-radius: 2px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .photo-slot:hover {
+      background: white;
+      border-color: var(--rose);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(180,96,110,0.12);
+    }
+
+    .photo-slot img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      position: absolute;
+      inset: 0;
+      border-radius: 2px;
+    }
+
+    .photo-slot .slot-label {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1rem;
+      color: var(--dusty-pink);
+      text-align: center;
+      padding: 0 16px;
+      z-index: 1;
+    }
+
+    .photo-slot .slot-icon {
+      font-size: 1.4rem;
+      opacity: 0.5;
+    }
+
+    .photo-slot input[type="file"] {
+      display: none;
+    }
+
+    .photo-caption-overlay {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: linear-gradient(transparent, rgba(74,45,53,0.7));
+      padding: 20px 12px 12px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .photo-slot:hover .photo-caption-overlay { opacity: 1; }
+    .photo-caption-overlay span {
+      color: white;
+      font-family: 'Dancing Script', cursive;
+      font-size: 0.9rem;
+    }
+
+    /* ─── CLOSING ─── */
+    #closing {
+      background: linear-gradient(160deg, var(--petal) 0%, var(--cream) 60%);
+      text-align: center;
+      padding-bottom: 120px;
+    }
+
+    .closing-heart {
+      font-size: 3rem;
+      display: block;
+      margin-bottom: 20px;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .closing-message {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      font-style: italic;
+      color: var(--text-dark);
+      line-height: 1.6;
+      max-width: 560px;
+      margin: 0 auto 36px;
+    }
+
+    .closing-sub {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.5rem;
+      color: var(--deep-rose);
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      text-align: center;
+      padding: 28px;
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      border-top: 1px solid rgba(228,160,176,0.15);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: rotate(45deg) translateY(0); }
+      50%       { transform: rotate(45deg) translateY(5px); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50%       { transform: scale(1.12); }
+    }
+
+    /* ─── SCROLL REVEAL ─── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── MOBILE ─── */
+    @media (max-width: 640px) {
+      nav { gap: 20px; padding: 16px 20px; }
+      nav a { font-size: 0.65rem; }
+
+      .timeline::before { left: 20px; transform: none; }
+
+      .tl-item {
+        grid-template-columns: 40px 1fr;
+        grid-template-rows: auto auto;
+        gap: 4px 12px;
+        margin-bottom: 40px;
+      }
+
+      .tl-item:nth-child(odd) .tl-dot,
+      .tl-item:nth-child(even) .tl-dot     { grid-column: 1; grid-row: 1; }
+      .tl-item:nth-child(odd) .tl-date,
+      .tl-item:nth-child(even) .tl-date    { grid-column: 2; grid-row: 1; text-align: left; }
+      .tl-item:nth-child(odd) .tl-content,
+      .tl-item:nth-child(even) .tl-content { grid-column: 2; grid-row: 2; text-align: left; }
+
+      .photo-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="petals-canvas"></canvas>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#letter">Letter</a>
+    <a href="#gallery">Memories</a>
+    <a href="#closing">Always</a>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <p class="hero-eyebrow">To my dearest Peachy 🍑</p>
+    <h1 class="hero-title">Happy <span>4th</span><br>Monthsary</h1>
+    <p class="hero-sub">Four months of you — and I'd choose every single one again.</p>
+    <div class="hero-divider"></div>
+    <p class="hero-date">February 12, 2025 &nbsp;·&nbsp; James &amp; Reaben</p>
+    <div class="scroll-hint">
+      <span>Scroll</span>
+      <div class="scroll-arrow"></div>
+    </div>
+  </section>
+
+  <!-- LOVE LETTER -->
+  <section id="letter">
+    <div class="container reveal">
+      <span class="section-label">From the heart</span>
+      <h2 class="section-title">A letter for <em>you</em></h2>
+      <div class="letter-card">
+        <div class="letter-body">
+          <p>My love Peachy,</p>
+          <p>
+            Four months. ang bilis ng panahon, di natin namamalayan love ko.
+          </p>
+          <p>
+            You came into my life and made everything softer, warmer, and more colorful.
+          </p>
+          <p>
+            I love the way your eyes light up over the smallest things. I love how genuinely kind you are, thank you so much love. I love how being around you kahit sa phone lang tayo nag-uusap it feels like home.
+          </p>
+          <p>
+            Thank you for being my girlfriend, Peachy. Thank you for your patience, your warmth, and your heart.
+          </p>
+          <p>I love you so much love mahal na mahal kita.</p>
+        </div>
+        <div class="letter-signature">
+          <span class="sig-label">Forever yours</span>
+          <span class="sig-name">James </span>
+        </div>
+      </div>
+    </div>
+
+
+  <!-- GALLERY -->
+  <section id="gallery">
+    <div class="container reveal">
+      <span class="section-label">Our memories</span>
+      <h2 class="section-title">Moments I <em>cherish</em></h2>
+      <p class="gallery-intro">
+        Every photo is a moment frozen in time a little proof that we existed, that we laughed, that we were happy together.
+      </p>
+      <div class="photo-grid" id="photoGrid">
+        <!-- Photo slots generated by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- CLOSING -->
+  <section id="closing">
+    <div class="container reveal">
+      <span class="closing-heart">🍑</span>
+      <p class="closing-message">
+        "In a world full of moments, my favorite ones are always the ones that have you in them."
+      </p>
+      <p class="closing-sub">— Happy 4th Monthsary, my Peachy. I love you. —</p>
+    </div>
+  </section>
+
+  <footer>
+    <p>Made with love by James &nbsp;·&nbsp; For Reaben "Peachy" &nbsp;·&nbsp; February 2025</p>
+  </footer>
+
+  <script>
+    /* ────────────────────────────────
+       FALLING PETALS
+    ──────────────────────────────── */
+    const canvas = document.getElementById('petals-canvas');
+    const ctx = canvas.getContext('2d');
+    let petals = [];
+    const PETAL_COUNT = 28;
+
+    function resize() {
+      canvas.width  = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    const colors = ['#f2c4ce','#e8a0b0','#fde8ed','#f5b8c4','#ebb5c2'];
+
+    function createPetal() {
+      return {
+        x: Math.random() * canvas.width,
+        y: -20,
+        size: 5 + Math.random() * 9,
+        speedY: 0.6 + Math.random() * 1.2,
+        speedX: -0.4 + Math.random() * 0.8,
+        rotation: Math.random() * Math.PI * 2,
+        rotSpeed: (Math.random() - 0.5) * 0.03,
+        opacity: 0.4 + Math.random() * 0.5,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        wobble: Math.random() * Math.PI * 2,
+        wobbleSpeed: 0.02 + Math.random() * 0.02,
+      };
+    }
+
+    for (let i = 0; i < PETAL_COUNT; i++) {
+      const p = createPetal();
+      p.y = Math.random() * window.innerHeight;
+      petals.push(p);
+    }
+
+    function drawPetal(p) {
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rotation);
+      ctx.globalAlpha = p.opacity;
+      ctx.fillStyle = p.color;
+      ctx.beginPath();
+      ctx.ellipse(0, 0, p.size * 0.55, p.size, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function animatePetals() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      petals.forEach((p, i) => {
+        p.wobble += p.wobbleSpeed;
+        p.x += p.speedX + Math.sin(p.wobble) * 0.5;
+        p.y += p.speedY;
+        p.rotation += p.rotSpeed;
+        if (p.y > canvas.height + 20) {
+          petals[i] = createPetal();
+        }
+        drawPetal(p);
+      });
+      requestAnimationFrame(animatePetals);
+    }
+    animatePetals();
+
+    /* ────────────────────────────────
+       SCROLL REVEAL
+    ──────────────────────────────── */
+    const revealEls = document.querySelectorAll('.reveal, .tl-item');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.12 });
+
+    revealEls.forEach(el => observer.observe(el));
+
+    /* ────────────────────────────────
+       PHOTO GALLERY
+    ──────────────────────────────── */
+    const photoGrid = document.getElementById('photoGrid');
+    const captions = [
+      'iloveyouu always',
+      'ai muna sa ngayon lovee',
+      'cutecute naten dito💕',
+      'sweeet🌸',
+      'Us, always 🍑',
+      'Forever grateful 🌹',
+    ];
+
+    captions.forEach((caption, i) => {
+      const photos = [
+  { src: 'photos/photo1.png', caption: 'iloveyouu always' },
+  { src: 'photos/photo2.png', caption: 'ai muna sa ngayon lovee' },
+  { src: 'photos/photo3.png', caption: 'cutecute naten dito💕' },
+  { src: 'photos/photo4.png', caption: 'sweeet🌸' },
+  { src: 'photos/photo5.png', caption: 'Us, always 🍑' },
+  { src: 'photos/photo6.png', caption: 'Forever grateful 🌹' },
+];
+
+photos.forEach((photo) => {
+  const slot = document.createElement('div');
+  slot.className = 'photo-slot';
+  slot.style.cursor = 'default';
+  slot.innerHTML = `
+    <img src="${photo.src}" alt="${photo.caption}" />
+    <div class="photo-caption-overlay"><span>${photo.caption}</span></div>
+  `;
+  photoGrid.appendChild(slot);
+});
+
+      slot.querySelector('input[type="file"]').addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          // Remove icon and label
+          slot.querySelector('.slot-icon')?.remove();
+          slot.querySelector('.slot-label')?.remove();
+          // Add image
+          let img = slot.querySelector('img');
+          if (!img) {
+            img = document.createElement('img');
+            slot.prepend(img);
+          }
+          img.src = ev.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+
+      photoGrid.appendChild(slot);
+    });
+
+    /* ────────────────────────────────
+       STAGGERED TIMELINE
+    ──────────────────────────────── */
+    document.querySelectorAll('.tl-item').forEach((item, i) => {
+      item.style.transitionDelay = `${i * 0.1}s`;
+    });
+  </script>
+</body>
+</html>
